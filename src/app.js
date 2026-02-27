@@ -12,6 +12,7 @@ app.get('/health', (req,res)=>{
     res.json({status: 'ok'});
 })
 
+// Connect Routes to App
 app.use('/api/auth', authRoutes);
 
 module.exports = app;
