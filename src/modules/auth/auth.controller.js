@@ -27,7 +27,7 @@ const register = async (req , res )=>{
             email,
             password : hashedPassword,
             role : 'ORG_ADMIN',
-            orgID : organization._id
+            orgId : organization._id
         })
 
         // generate token
@@ -61,7 +61,7 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
+     
     // Generate token
     const token = generateToken(user);
 
