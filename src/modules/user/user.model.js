@@ -22,7 +22,7 @@ const userSchema = new mongoos.Schema({
         enum: ['SUPER_ADMIN', 'ORG_ADMIN', 'MEMBER'],
         default: 'MEMBER'
     },
-    orgID: {
+    orgId: {
         type: mongoos.Schema.Types.ObjectId,
         ref: 'Organization',
         required: true
