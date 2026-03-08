@@ -2,10 +2,7 @@ const Project = require("./project.model");
 
 const createProject = async (req, res) => {
   try {
-    console.log(req.user);
-    
     const { title, description } = req.body;
-
 
     const project = await Project.create({
       title,
@@ -23,6 +20,25 @@ const createProject = async (req, res) => {
   }
 };
 
+const getProjects = async (req, res) => {
+  try {
+
+    const projects = await Project.find({
+      orgId: req.user.orgId,
+      isActive: true
+    });
+
+    res.json({
+      message: "Projects fetched successfully",
+      count: projects.length,
+      projects
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
-  createProject,
+  createProject, getProjects
 };
