@@ -39,6 +39,33 @@ const getProjects = async (req, res) => {
   }
 };
 
+const getProjectById = async (req, res) => {
+  try {
+
+    const project = await Project.findOne({
+      _id: req.params.id,
+      orgId: req.user.orgId,
+      isActive: true
+    });
+
+    if (!project) {
+      return res.status(404).json({
+        message: "Project not found"
+      });
+    }
+
+    res.json({
+      message: "Project fetched successfully",
+      project
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
+
 module.exports = {
-  createProject, getProjects
+  createProject, getProjects , getProjectById
 };
