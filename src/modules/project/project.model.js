@@ -32,4 +32,6 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+projectSchema.index({ orgId: 1, isActive: 1 });
+
 module.exports = mongoose.model("Project", projectSchema);
