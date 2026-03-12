@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require('../../middlewares/auth.middleware')
-const {createProject , getProjects } = require('./project.controller')
+const {createProject , getProjects , getProjectById } = require('./project.controller')
 
 
 // router.get('/', authMiddleware , (req,res)=>{
@@ -13,6 +13,7 @@ const {createProject , getProjects } = require('./project.controller')
 
 router.post("/", authMiddleware, createProject);
 router.get("/", authMiddleware, getProjects);
+router.get("/:id", authMiddleware, getProjectById);
 
 module.exports = router;
 
