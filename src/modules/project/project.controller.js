@@ -1,5 +1,6 @@
 const Project = require("./project.model");
 
+// create a project
 const createProject = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -20,6 +21,7 @@ const createProject = async (req, res) => {
   }
 };
 
+// get all projects for the organization
 const getProjects = async (req, res) => {
   try {
 
@@ -39,6 +41,7 @@ const getProjects = async (req, res) => {
   }
 };
 
+// get project by id
 const getProjectById = async (req, res) => {
   try {
 
@@ -66,7 +69,7 @@ const getProjectById = async (req, res) => {
   }
 };
 
-
+// update project
 const updateProject = async (req, res) => {
   try {
 
@@ -108,7 +111,7 @@ const updateProject = async (req, res) => {
   }
 };
 
-
+// soft delete project
 const deleteProject = async (req, res) => {
   try {
 
