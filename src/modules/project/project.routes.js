@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require('../../middlewares/auth.middleware')
-const {createProject , getProjects , getProjectById , updateProject , deleteProject} = require('./project.controller')
+const {createProject , getProjects , getProjectById , updateProject , deleteProject , getAllProjects} = require('./project.controller')
 
 
 // router.get('/', authMiddleware , (req,res)=>{
@@ -11,6 +11,7 @@ const {createProject , getProjects , getProjectById , updateProject , deleteProj
 //     });
 // });
 
+router.get("/all", authMiddleware, getAllProjects);  // paginated route 
 router.post("/", authMiddleware, createProject);
 router.get("/", authMiddleware, getProjects);
 router.get("/:id", authMiddleware, getProjectById);
