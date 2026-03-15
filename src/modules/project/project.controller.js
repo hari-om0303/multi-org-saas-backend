@@ -152,6 +152,44 @@ const deleteProject = async (req, res) => {
   }
 };
 
+// pagination implementation with limit and skip
+const getAllProjects = async (req, res) => {
+  try {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const projects = await Project.find({
+      orgId: req.user.orgId,
+      isActive: true
+    })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const total = await Project.countDocuments({
+      orgId: req.user.orgId,
+      isActive: true
+    });
+
+    res.json({
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      projects
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
+
+
 module.exports = {
-  createProject, getProjects , getProjectById , updateProject , deleteProject
+  createProject, getProjects , getProjectById , updateProject , deleteProject , getAllProjects
 };
