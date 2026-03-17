@@ -1,4 +1,5 @@
 const Project = require("./project.model");
+const withTenant = require("../../utils/tenant");
 
 // create a project
 const createProject = async (req, res) => {
@@ -25,10 +26,9 @@ const createProject = async (req, res) => {
 const getProjects = async (req, res) => {
   try {
 
-    const projects = await Project.find({
-      orgId: req.user.orgId,
-      isActive: true
-    });
+    const projects = await Project.find(
+      withTenant({ isActive: true }, req.user.orgId)
+    );
 
     res.json({
       message: "Projects fetched successfully",
@@ -161,10 +161,9 @@ const getAllProjects = async (req, res) => {
 
     const skip = (page - 1) * limit;
 
-    const projects = await Project.find({
-      orgId: req.user.orgId,
-      isActive: true
-    })
+    const projects = await Project.find(
+      withTenant({ isActive: true }, req.user.orgId)
+    )
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
@@ -191,5 +190,5 @@ const getAllProjects = async (req, res) => {
 
 
 module.exports = {
-  createProject, getProjects , getProjectById , updateProject , deleteProject , getAllProjects
+  createProject, getProjects, getProjectById, updateProject, deleteProject, getAllProjects
 };
