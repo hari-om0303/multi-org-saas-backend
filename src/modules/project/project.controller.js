@@ -152,42 +152,42 @@ const deleteProject = async (req, res) => {
   }
 };
 
-// pagination implementation with limit and skip
-const getAllProjects = async (req, res) => {
+// Implementing Cursor-Based Pagination
+const getAllProjects = async (req, res) => {   //this getAllProjects == getProjects
   try {
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 5;
+    const cursor = req.query.cursor;
 
-    const skip = (page - 1) * limit;
-
-    const projects = await Project.find(
-      withTenant({ isActive: true }, req.user.orgId)
-    )
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
-
-    const total = await Project.countDocuments({
+    let query = {
       orgId: req.user.orgId,
       isActive: true
-    });
+    };
+
+    // If cursor exists → fetch next records
+    if (cursor) {
+      query._id = { $gt: cursor };
+    }
+
+    const projects = await Project.find(query)
+      .sort({ _id: 1 })   // important for cursor
+      .limit(limit);
+
+    const nextCursor =
+      projects.length > 0
+        ? projects[projects.length - 1]._id
+        : null;
 
     res.json({
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
+      count: projects.length,
+      nextCursor,
       projects
     });
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = {
   createProject, getProjects, getProjectById, updateProject, deleteProject, getAllProjects
